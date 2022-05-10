@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+@model PagedList.IPagedList<Assignment4.Models.Article>
+@using PagedList.Mvc;
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tìm Kiếm</title>
+    <link rel="icon" href="https://res.cloudinary.com/hung71294/image/upload/v1652148408/logo_ketvxq.jpg" type="image/x-icon" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css">
+    <script src='//theme.hstatic.net/1000342714/1000664932/14/jquery-2.2.3.min.js?v=26' type='text/javascript'></script>
+    <link href='~/Content/plugin.css' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/base.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/style.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/module.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/responsive.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+</head>
+<body>
+    <div class="page-body">
+        <div class="hidden-md hidden-lg opacity_menu"></div>
+        <div class="opacity_filter"></div>
+        <div class="body_opactiy"></div>
+        <div class="wrap_header_top">
+            <div class="header_top">
+                <div class="topbar_wrap">
+                    <div class="container">
+                        <div class="row">
+                            <div class="head_content col-lg-12 col-md-12 col-sm-12">
+                                <div class="row">
+                                    <div class="logo_top col-lg-3 col-md-3">
+                                        <a href="/" class="logo-wrapper ">
+                                            <img src="https://res.cloudinary.com/hung71294/image/upload/v1652148408/logo_ketvxq.jpg" width="176" height="80"
+                                                 alt="Tin tức Việt Nam">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-search-engine">
+                                        <div class="header_search">
+                                            <form class="input-group search-bar" action="/News/SearchResult" method="get"
+                                                  role="search">
+                                                <input type="search" name="keyword" value=""
+                                                       placeholder="Vui lòng nhập từ khóa... "
+                                                       class="input-group-field st-default-search-input search-text"
+                                                       autocomplete="off" required>
+                                                <span class="input-group-btn">
+                                                    <button class="btn icon-fallback-text">
+                                                        <i class="ion-android-search"></i>
+                                                    </button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="bread-crumb">
+            <span class="crumb-border"></span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 a-left">
+                        <ul class="breadcrumb">
+                            <li class="home">
+                                <span itemprop="title">24h.news.vn</span>
+                                <span class="mr_lr">&nbsp;/&nbsp;</span>
+                            </li>
+                            <li class="home">
+                                <a href="/News"><span itemprop="title">Tin tức</span></a>
+                                <span class="mr_lr">&nbsp;/&nbsp;</span>
+                            </li>
+                            <li>
+                                <strong><span>Tìm Kiếm</span></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="blog_page_section">
+            <div class="container  margin-bottom-50 margin-top-30">
+                <div class="row">
+                    <section class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="page_title">
+                            <h1 class="title_page_h1">
+                                Tìm Kiếm
+                            </h1>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-search-engine" style="margin-bottom: 30px">
+                            <div class="header_search">
+                                <form class="input-group search-bar" id="searchMain" action="/News/SearchResult" method="get"
+                                      role="search">
+                                    <input type="search" name="keyword" value="@ViewBag.keyword"
+                                           placeholder="Vui lòng nhập từ khóa... "
+                                           class="input-group-field st-default-search-input search-text"
+                                           autocomplete="off" required>
+                                    <label for="category" style="display: flex; align-items: center; margin: 15px 15px 15px 0px;">
+                                        Danh mục
+                                        <select name="category_id" id="category" style="width: 150px; height: 35px; margin-left: 10px;border-radius: 5px">
+                                            @foreach (var category in ViewBag.categoriesResult)
+                                            {
+                                                string value = category.Id;
+                                                if (value.Equals(ViewBag.categoryId))
+                                                {
+                                                    <option value="@value" selected>@category.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@category.Id">@category.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </label>
+                                    <span class="input-group-btn">
+
+                                        <button class="btn icon-fallback-text">
+                                            <i class="ion-android-search"></i>
+                                        </button>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                        <section class="list-blogs blog-main">
+                            <div class="row">
+                                @foreach (var article in Model)
+                                {
+                                    <div class="blog_full margin-bottom-15">
+                                        <div class="blog-inner">
+                                            <div class="blog-img col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <a href="/News/Article/@article.Id">
+                                                    <picture>
+                                                        <img src="@article.Image"
+                                                             style="max-width:100%;" class="img-responsive"
+                                                             alt="@article.Title">
+                                                    </picture>
+                                                </a>
+                                            </div>
+                                            <div class="content_blog_full col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                <h3>
+                                                    <a class="text2line"
+                                                       title="@article.Title"
+                                                       href="/News/Article/@article.Id">
+                                                        @article.Title
+                                                    </a>
+                                                </h3>
+                                                <span class="time_post"><i class="ion-clock"></i>05/12/2018</span>
+                                                <div class="blog-description">
+                                                    <p class="text3line">
+                                                        @article.Description
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+                        <div style="display: flex; justify-content:center; align-items:center; margin-top:20px">
+                            <p style="margin:0 20px 0 0">
+                                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                of @Model.PageCount
+                            </p>
+                            @Html.PagedListPager(Model, page => Url.Action("SearchResult", new { category_id = ViewBag.categoryId, keyword = ViewBag.keyword, page }))
+                        </div>
+                    </section> 
+                </div>
+            </div>
+        </section>
+    </div>
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/lightbox.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <script src='//theme.hstatic.net/1000342714/1000664932/14/plugin.js?v=26' type='text/javascript'></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</body>
+</html>

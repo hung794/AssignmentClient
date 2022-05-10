@@ -1,0 +1,206 @@
+﻿@{
+    Layout = null;
+}
+@model PagedList.IPagedList<Assignment4.Models.Article>
+@using PagedList.Mvc;
+<html lang="vi">
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tin Tức 24h</title>
+    <link rel="icon" href="https://res.cloudinary.com/hung71294/image/upload/v1652148408/logo_ketvxq.jpg" type="image/x-icon" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css">
+    <script src='//theme.hstatic.net/1000342714/1000664932/14/jquery-2.2.3.min.js?v=26' type='text/javascript'></script>
+    <link href='~/Content/plugin.css' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/base.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/style.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/module.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/responsive.scss.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+</head>
+<body>
+    <div class="page-body">
+        <div class="hidden-md hidden-lg opacity_menu"></div>
+        <div class="opacity_filter"></div>
+        <div class="body_opactiy"></div>
+        <div class="wrap_header_top">
+            <div class="header_top">
+                <div class="topbar_wrap">
+                    <div class="container">
+                        <div class="row">
+                            <div class="head_content col-lg-12 col-md-12 col-sm-12">
+                                <div class="row">
+                                    <div class="logo_top col-lg-3 col-md-3">
+                                        <a href="/" class="logo-wrapper ">
+                                            <img src="https://res.cloudinary.com/hung71294/image/upload/v1652148408/logo_ketvxq.jpg" width="176" height="80"
+                                                 alt="Tin tức Việt Nam">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-search-engine">
+                                        <div class="header_search">
+                                            <form class="input-group search-bar" action="/News/SearchResult" method="get"
+                                                  role="search">
+                                                <input type="search" name="keyword" value=""
+                                                       placeholder="Vui lòng nhập từ khóa... "
+                                                       class="input-group-field st-default-search-input search-text"
+                                                       autocomplete="off" required>
+                                                <span class="input-group-btn">
+                                                    <button class="btn icon-fallback-text">
+                                                        <i class="ion-android-search"></i>
+                                                    </button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="bread-crumb">
+            <span class="crumb-border"></span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 a-left">
+                        <ul class="breadcrumb">
+                            <li class="home">
+                                <span itemprop="title">24h.news.vn</span>
+                                <span class="mr_lr">&nbsp;/&nbsp;</span>
+                            </li>
+                            <li>
+                                <strong><span>Tin tức</span></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="blog_page_section">
+            <div class="container  margin-bottom-50 margin-top-30">
+                <div class="row">
+                    <section class="right-content col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-push-3 col-md-push-3">
+                        <div class="page_title">
+                            <h1 class="title_page_h1">
+                                Tin tức
+                            </h1>
+                        </div>
+                        <section class="list-blogs blog-main">
+                            <div class="row">
+                                @foreach (var article in Model)
+                                {
+                                    <div class="blog_full margin-bottom-15">
+                                        <div class="blog-inner">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <a href="/News/Article/@article.Id">
+                                                    <picture>
+                                                        <img src="@article.Image"
+                                                             style="max-width:100%;" class="img-responsive"
+                                                             alt="@article.Title">
+                                                    </picture>
+                                                </a>
+                                            </div>
+                                            <div class="content_blog_full col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                <h3>
+                                                    <a class="text2line"
+                                                       title="@article.Title"
+                                                       href="/News/Article/@article.Id">
+                                                        @article.Title
+                                                    </a>
+                                                </h3>
+                                                <span class="time_post"><i class="ion-clock"></i>05/12/2018</span>
+                                                <div class="blog-description">
+                                                    <p class="text3line">
+                                                        @article.Description
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+                        <div style="display: flex; justify-content:center; align-items:center; margin-top:20px">
+                            <p style="margin:0 20px 0 0">
+                                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                of @Model.PageCount
+                            </p>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                        </div>
+                    </section>
+                    <aside class="left left-content col-lg-3 col-md-3 col-sm-12 col-xs-12 col-lg-pull-9 col-md-pull-9">
+                        <aside class="aside-item collection-category blog_cate">
+                            <div class="title_module"><h2><span>Danh mục tin tức</span></h2></div>
+                            <div class="aside-content aside-cate-link-cls aside-cate-blog">
+                                <nav class="cate_padding nav-category navbar-toggleable-md">
+                                    <ul class="nav-ul nav navbar-pills">
+                                        @foreach (var category in ViewBag.categories)
+                                        {
+                                            <li class="nav-item ">
+                                                @Html.ActionLink((string)category.Name, "SearchResult", new { category_id = category.Id })
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                                <span class="border-das-sider"></span>
+                            </div>
+                        </aside>
+                        <div class="aside-item">
+                            <div>
+                                <div class="title_title">
+                                    <h2><a href="news" title="Tin tức nổi bật">Tin tức nổi bật</a></h2>
+                                </div>
+                                <div class="list-blogs">
+                                    <div class="blog_list_item">
+                                        @foreach (var article in ViewBag.newArticle)
+                                        {
+                                            <article class="blog-item blog-item-list ">
+                                                <div class="blog-item-thumbnail img1"
+                                                     onclick="window.location.href = '/News/Article/@article.Id';">
+                                                    <a href="/News/Article/@article.Id">
+                                                        <picture>
+                                                            <img src="@article.Image"
+                                                                 style="max-width:100%;" class="img-responsive"
+                                                                 alt="@article.Title">
+                                                        </picture>
+                                                    </a>
+                                                </div>
+                                                <div class="ct_list_item">
+                                                    <h3 class="blog-item-name">
+                                                        <a class="text2line"
+                                                           href="/News/Article/@article.Id"
+                                                           title="@article.Title">
+                                                            @article.Title
+                                                        </a>
+                                                    </h3>
+                                                    <span class="time_post"><i class="ion-clock"></i>05/12/2018</span>
+                                                </div>
+                                            </article>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+        <footer id="footer">
+            <a href="#" id="back-to-top" class="backtop" title="Lên đầu trang"><i class="fa fa-angle-up"></i></a>
+        </footer>
+    </div>
+    <link href='//theme.hstatic.net/1000342714/1000664932/14/lightbox.css?v=26' rel='stylesheet' type='text/css'
+          media='all' />
+    <script src='//theme.hstatic.net/1000342714/1000664932/14/plugin.js?v=26' type='text/javascript'></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</body>
+</html>
