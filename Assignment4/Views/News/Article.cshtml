@@ -98,11 +98,14 @@
                                     <h1 class="title-head-article">
                                         <a href="/blogs/news/3-san-pham-noi-tieng-nao-cua-dior-bat-ngo-bi-thu-hoi-tai-viet-nam"
                                            itemprop="name">
-                                           @Model.Title
+                                            @Model.Title
                                         </a>
                                     </h1>
+                                    @{
+                                        var dateTime = new DateTime((long)Model.CreatedAt);
+                                    }
                                     <span class="time_post">
-                                        <i class="ion-clock"></i>05/12/2018 <span class="pot">
+                                        <i class="ion-clock"></i>@dateTime <span class="pot">
                                             <i class="ion-person"></i>Đăng bởi: <span class="name_">Admin</span>
                                         </span>
                                     </span>
