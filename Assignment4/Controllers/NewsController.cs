@@ -1,6 +1,7 @@
 ﻿using Assignment4.Data;
 using Assignment4.ElasticSearch;
 using Assignment4.Models;
+using Nest;
 using PagedList;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +15,14 @@ namespace Assignment4.Controllers
         // GET: News
         public ActionResult Index(int? page)
         {
-            if (page == null) page = 1;
             int pageSize = 4;
-            int pageIndex = (page ?? 1);
-            Search.EsClient().Indices.Delete("articles");
-            var articles = db.Articles.ToList();
-            articles.Reverse();
-            foreach(Article article in articles)
-            { 
-                Search.EsClient().IndexDocument(article);
-            }
+            int pageIndex = page ?? 1;
+            var articles = db.Articles.OrderByDescending(a => a.CreatedAt).ToList();
             var categories = db.Categories.ToList();
             IPagedList<Article> pagedArticles = articles.ToPagedList(pageIndex, pageSize);
             ViewBag.categories = categories;
             var newestArticle = new List<Article>();
-            for(int i = articles.Count - 1; i > articles.Count - 5; i--)
+            for (int i = articles.Count - 1; i > articles.Count - 5; i--)
             {
                 newestArticle.Add(articles[i]);
             }
@@ -39,24 +33,45 @@ namespace Assignment4.Controllers
         [HttpGet]
         public ActionResult SearchResult(string keyword, int? page, string category_id)
         {
-            var searchResponse = Search.EsClient().Search<Article>
-                (
-                        s => s.Query(q => q.Match(m => m.Field(f => f.CategoryId).Query(category_id)) ||
-                        (q.Match(m => m.Field(f => f.Title).Query(keyword)) ||
-                        q.Match(m => m.Field(f => f.Description).Query(keyword)) ||
-                        q.Match(m => m.Field(f => f.Content).Query(keyword)))
-                    )
-                );
-            ViewBag.categoriesResult = db.Categories.ToList();
-            List<Article> articles1 = searchResponse.Documents.ToList();
-            articles1.Reverse();
             if (page == null) page = 1;
             int pageSize = 4;
             int pageIndex = (page ?? 1);
-            IPagedList<Article> pagedArticles = articles1.ToPagedList(pageIndex, pageSize);
+            // search elastic
+            var searchRequest = new SearchRequest<Article>();
+            searchRequest.From = 0;
+            searchRequest.Size = 10000;
+            var listQuery = new List<QueryContainer>();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var query = new BoolQuery
+                {
+                    Should = new List<QueryContainer>
+                        {
+                             new MatchQuery{ Field = "title", Query = keyword},
+                             new MatchQuery{ Field = "description", Query = keyword}
+                        }
+                };
+                listQuery.Add(query);
+            }
+            if (!string.IsNullOrEmpty(category_id))
+            {
+                listQuery.Add(new MatchQuery { Field = "categoryId", Query = category_id });
+            }
+            searchRequest.Query = new QueryContainer(new BoolQuery
+            {
+                Must = listQuery
+            });
+            searchRequest.Sort = new List<ISort>
+                {
+                    new FieldSort { Field = "createdAt", Order = SortOrder.Descending }
+                };
+            var searchResult =
+                Search.EsClient().Search<Article>(searchRequest);
+            var articleList = searchResult.Documents.ToList();
+            ViewBag.categoriesResult = db.Categories.ToList();
             ViewBag.categoryId = category_id;
             ViewBag.keyword = keyword;
-            return View("SearchResult", pagedArticles);
+            return View("SearchResult", articleList.ToPagedList(pageIndex, pageSize));
         }
 
         [Route("News/Article/{title}")]
